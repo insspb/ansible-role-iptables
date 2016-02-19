@@ -2,4 +2,4 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - iptables
+    - ansible-role-iptables
