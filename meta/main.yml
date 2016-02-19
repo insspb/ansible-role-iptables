@@ -141,9 +141,9 @@ galaxy_info:
   
   galaxy_tags: 
      - iptables
-	 - network
-	 - firewall
-	 - protection
-	 - net
+     - network
+     - firewall
+     - protection
+     - net
 
 dependencies: []
