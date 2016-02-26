@@ -3,7 +3,10 @@ iptables_input_policy: "DROP"
 iptables_forward_policy: "DROP"
 iptables_output_policy: "ACCEPT"
 
+iptables_logging: true
 iptables_icmp_enabled: true
+
+iptables_unprotected_interfaces: []
 
 iptables_rules:
   - protocol: tcp

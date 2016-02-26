@@ -10,16 +10,21 @@
 :TCP - [0:0]
 :ICMP - [0:0]
 
+{% for interface in iptables_unprotected_interfaces %}
+-A INPUT -i {{ interface }} -j ACCEPT
+-A OUTPUT -i {{ interface }} -j ACCEPT
+{% endfor %}
+
 {% for rule in iptables_rules %}
 {% if rule.protocol == "tcp" %}
--A TCP -p tcp -s {{ rule.source_addresses|default("0.0.0.0/0") }} --dport {{ rule.port|default("0:65535") }} {% if rule.comment is defined -%} -m comment --comment "{{ rule.comment }}" {%- endif %} -j ACCEPT
+-A TCP -p tcp -s {{ rule.source_addresses|default("0.0.0.0/0") }} --dport {{ rule.port|default("0:65535") }} {% if rule.comment is defined -%} -m comment --comment "{{ rule.comment }}" {%- endif %} {% if rule.interface is defined -%}-i "{{ rule.interface }}" {%- endif %} -j ACCEPT
 {% endif %}
 {% if rule.protocol == "udp" %}
--A UDP -p udp -s {{ rule.source_addresses|default("0.0.0.0/0") }} --dport {{ rule.port|default("0:65535") }} {% if rule.comment is defined -%} -m comment --comment "{{ rule.comment }}" {%- endif %} -j ACCEPT
+-A UDP -p udp -s {{ rule.source_addresses|default("0.0.0.0/0") }} --dport {{ rule.port|default("0:65535") }} {% if rule.comment is defined -%} -m comment --comment "{{ rule.comment }}" {%- endif %} {% if rule.interface is defined -%}-i "{{ rule.interface }}" {%- endif %} -j ACCEPT
 {% endif %}
 {% if rule.protocol == "any" %}
--A TCP -p tcp -s {{ rule.source_addresses|default("0.0.0.0/0") }} --dport {{ rule.port|default("0:65535") }} {% if rule.comment is defined -%} -m comment --comment "{{ rule.comment }}" {%- endif %} -j ACCEPT
--A UDP -p udp -s {{ rule.source_addresses|default("0.0.0.0/0") }} --dport {{ rule.port|default("0:65535") }} {% if rule.comment is defined -%} -m comment --comment "{{ rule.comment }}" {%- endif %} -j ACCEPT
+-A TCP -p tcp -s {{ rule.source_addresses|default("0.0.0.0/0") }} --dport {{ rule.port|default("0:65535") }} {% if rule.comment is defined -%} -m comment --comment "{{ rule.comment }}" {%- endif %} {% if rule.interface is defined -%}-i "{{ rule.interface }}" {%- endif %} -j ACCEPT
+-A UDP -p udp -s {{ rule.source_addresses|default("0.0.0.0/0") }} --dport {{ rule.port|default("0:65535") }} {% if rule.comment is defined -%} -m comment --comment "{{ rule.comment }}" {%- endif %} {% if rule.interface is defined -%}-i "{{ rule.interface }}" {%- endif %} -j ACCEPT
 {% endif %}
 {% endfor %}
 
@@ -39,6 +44,11 @@
 -A INPUT -p udp -j REJECT --reject-with icmp-port-unreachable
 -A INPUT -p tcp -j REJECT --reject-with tcp-reset
 -A INPUT -j REJECT --reject-with icmp-proto-unreachable
+
+{% if iptables_logging %}
+# Logging
+-A INPUT -m limit --limit 15/minute -j LOG --log-level 7 --log-prefix "Dropped by iptables: "
+{% endif %}
 
 COMMIT
 
