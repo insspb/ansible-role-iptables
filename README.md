@@ -14,14 +14,16 @@ No requiments yet.
 
 ## Role Variables
 
-| Name                        | Default                                                                       | Description                                       |
-|-----------------------------|-------------------------------------------------------------------------------|---------------------------------------------------|
-| iptables_input_policy       | "DROP"                                                                        | Default input policy                              |
-| iptables_forward_policy     | "DROP"                                                                        | Default forward policy                            |
-| iptables_output_policy      | "ACCEPT"                                                                      | Default output policy                             |
-| iptables_icmp_enabled       | True                                                                          | Enable/disable ICMP for all interfaces            |
-| iptables_rules              | [{protocol: tcp, source_addresses: 0.0.0.0/0, port: 22, comment: "OpenSSH" }] | Array of firewall rules represented as hashes     |
-| iptables_port_forward_rules | []                                                                            | Array of port forward rules represented as hashes |
+| Name                            | Default                                                                       | Description                                        |
+|---------------------------------|-------------------------------------------------------------------------------|----------------------------------------------------|
+| iptables_input_policy           | "DROP"                                                                        | Default input policy                               |
+| iptables_forward_policy         | "DROP"                                                                        | Default forward policy                             |
+| iptables_output_policy          | "ACCEPT"                                                                      | Default output policy                              |
+| iptables_icmp_enabled           | True                                                                          | Enable/disable ICMP for all interfaces             |
+| iptables_logging                | True                                                                          | Enable/disable droped packages logging             |
+| iptables_rules                  | [{protocol: tcp, source_addresses: 0.0.0.0/0, port: 22, comment: "OpenSSH" }] | Array of firewall rules represented as hashes      |
+| iptables_unprotected_interfaces | []                                                                            | Array of interfaces where ALLOW ALL applied (list) |
+| iptables_port_forward_rules     | []                                                                            | Array of port forward rules represented as hashes  |
 
 
 ## Dependencies
