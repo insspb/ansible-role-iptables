@@ -1,6 +1,6 @@
 galaxy_info:
   author: Andrey Shpak
-  description: Role to install and configure iptables firewall on different systems.
+  description: Role to install and configure iptables firewall on different systems. Supports multiinterfaces configuration.
   license: license (MIT)
   
   min_ansible_version: 2.0
