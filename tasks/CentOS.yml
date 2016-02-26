@@ -1,4 +1,4 @@
 ---
 - name: Iptables | CentOS | Install iptables packages
   yum: name={{ item }} state=present
-  with_items: iptables_packages
+  with_items: "{{ iptables_packages }}"

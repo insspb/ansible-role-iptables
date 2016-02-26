@@ -1,4 +1,6 @@
 ---
 - name: Iptables | Ubuntu | Install iptables packages
+  become: yes
+  become_method: su
   apt: name={{ item }} state=present update_cache=yes
-  with_items: iptables_packages
+  with_items: "{{ iptables_packages }}"
