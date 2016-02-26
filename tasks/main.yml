@@ -1,5 +1,5 @@
 ---
-- name: Include distribution specific variables
+- name: Iptables | Include distribution specific variables
   include_vars: "{{ ansible_distribution }}.yml"
 
 - include: CentOS.yml
@@ -8,7 +8,7 @@
 - include: Ubuntu.yml
   when: ansible_distribution == "Ubuntu"
 
-- name: Create iptables configuration
+- name: Iptables | Create iptables configuration
   template: >
     src=iptables.j2
     dest={{ iptables_configuration }}
@@ -18,6 +18,6 @@
   register: config_result
   notify: restart iptables
 
-- name: Ensure iptables is started and enabled on boot
+- name: Iptables | Ensure iptables is started and enabled on boot
   service: name={{ iptables_service_name }} state=started enabled=yes
   changed_when: False
