@@ -16,7 +16,7 @@
     group=root
     mode=0600
   register: config_result
-  notify: restart iptables
+  notify: Iptables | Restart iptables
 
 - name: Iptables | Ensure iptables is started and enabled on boot
   service: name={{ iptables_service_name }} state=started enabled=yes
